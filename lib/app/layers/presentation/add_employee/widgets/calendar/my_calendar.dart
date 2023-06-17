@@ -193,7 +193,7 @@ class _MyCalendarPickerState extends State<MyCalendarPicker> {
                               ),
                             ),
                           ),
-                          _buildHeader(state.selectedDay),
+                          _buildHeader(state.focusedDay),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 32),
                             child: TableCalendar(
@@ -211,12 +211,26 @@ class _MyCalendarPickerState extends State<MyCalendarPicker> {
                                   ),
                               selectedDayPredicate: (day) =>
                                   state.selectedDay == day,
-                              focusedDay: state.selectedDay ?? DateTime.now(),
+                              focusedDay: state.focusedDay ??
+                                  state.selectedDay ??
+                                  DateTime.now(),
                               currentDay: state.selectedDay ?? DateTime.now(),
+                              onPageChanged: (focusedDay) =>
+                                  cubit.setFocusedDay(focusedDay),
                               calendarBuilders: CalendarBuilders(
                                 outsideBuilder: (context, day, focusedDay) =>
                                     const Text(''),
                               ),
+                              calendarStyle: const CalendarStyle(
+                                  selectedDecoration: BoxDecoration(
+                                      color: Color(0xFF1DA1F2),
+                                      shape: BoxShape.circle),
+                                  todayDecoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle),
+                                  todayTextStyle: TextStyle(
+                                    color: Color(0xFF1DA1F2),
+                                  )),
                             ),
                           ),
                           BottomButtons(
@@ -265,20 +279,26 @@ class _MyCalendarPickerState extends State<MyCalendarPicker> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Spacer(),
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_left_rounded,
-              color: Color(0xFF949C9E),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 7.0),
+            child: IconButton(
+              alignment: Alignment.centerRight,
+              icon: const Icon(
+                Icons.arrow_left_rounded,
+                color: Color(0xFF949C9E),
+                size: 40.0,
+              ),
+              onPressed: () {
+                _pageController.previousPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                );
+              },
             ),
-            onPressed: () {
-              _pageController.previousPage(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeOut,
-              );
-            },
           ),
           Text(
             headerText,
@@ -287,17 +307,22 @@ class _MyCalendarPickerState extends State<MyCalendarPicker> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_right_rounded,
-              color: Color(0xFF949C9E),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 7.0),
+            child: IconButton(
+              alignment: Alignment.centerLeft,
+              icon: const Icon(
+                Icons.arrow_right_rounded,
+                color: Color(0xFF949C9E),
+                size: 40.0,
+              ),
+              onPressed: () {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                );
+              },
             ),
-            onPressed: () {
-              _pageController.nextPage(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeOut,
-              );
-            },
           ),
           const Spacer(),
         ],

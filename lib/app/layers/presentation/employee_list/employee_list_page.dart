@@ -49,98 +49,117 @@ class EmployeeListPage extends StatelessWidget {
                     ],
                   ),
                 )
-              : GroupedListView<Employee, int>(
-                  elements: state.employees,
-                  useStickyGroupSeparators: true,
-                  itemComparator: (employee1, employee2) {
-                    return employee1.name!.compareTo(employee2.name!);
-                  },
-                  // groupComparator: (value1, value2) => value1.compareTo(value2),
-                  groupBy: (element) => element.group,
-                  groupSeparatorBuilder: (group) => Container(
-                    padding: const EdgeInsets.all(16.0),
-                    color: const Color(0xFFE5E5E5),
-                    child: Text(
-                      group == 0 ? 'Current employees' : 'Previous employees',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  itemBuilder: (context, employee) {
-                    return Slidable(
-                      key: ValueKey(employee.hashCode),
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        dismissible: DismissiblePane(onDismissed: () {
-                          _removeEmployee(context, employee);
-                        }),
-                        children: [
-                          SlidableAction(
-                            onPressed: (ctx) =>
-                                _removeEmployee(context, employee),
-                            backgroundColor: const Color(0xFFFE4A49),
-                            foregroundColor: Colors.white,
-                            icon: Icons.delete,
-                            autoClose: true,
+              : Column(
+                  children: [
+                    Expanded(
+                      child: GroupedListView<Employee, int>(
+                        elements: state.employees,
+                        useStickyGroupSeparators: true,
+                        itemComparator: (employee1, employee2) {
+                          return employee1.name!.compareTo(employee2.name!);
+                        },
+                        // groupComparator: (value1, value2) => value1.compareTo(value2),
+                        groupBy: (element) => element.group,
+                        groupSeparatorBuilder: (group) => Container(
+                          padding: const EdgeInsets.all(16.0),
+                          color: const Color(0xFFE5E5E5),
+                          child: Text(
+                            group == 0
+                                ? 'Current employees'
+                                : 'Previous employees',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ],
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: const Color(0xFFF2F2F2),
-                                width: 0.5,
-                                style: BorderStyle.solid)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              employee.name ?? '',
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 6.0),
-                            Text(
-                              employee.role?.description ?? '',
-                              style: const TextStyle(
-                                color: Color(0xFF949c9E),
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(height: 6.0),
-                            Row(
+                        ),
+                        itemBuilder: (context, employee) {
+                          return Slidable(
+                            key: ValueKey(employee.hashCode),
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              dismissible: DismissiblePane(onDismissed: () {
+                                _removeEmployee(context, employee);
+                              }),
                               children: [
-                                Text(
-                                  'From ${dateFormatWithComma.format(employee.from!)}',
-                                  style: const TextStyle(
-                                    color: Color(0xFF949c9E),
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                SlidableAction(
+                                  onPressed: (ctx) =>
+                                      _removeEmployee(context, employee),
+                                  backgroundColor: const Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  autoClose: true,
                                 ),
-                                if (employee.to != null)
+                              ],
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.all(16.0),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xFFF2F2F2),
+                                      width: 0.5,
+                                      style: BorderStyle.solid)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   Text(
-                                    ' - ${dateFormatWithComma.format(employee.to!)}',
+                                    employee.name ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6.0),
+                                  Text(
+                                    employee.role?.description ?? '',
                                     style: const TextStyle(
                                       color: Color(0xFF949c9E),
-                                      fontSize: 12.0,
+                                      fontSize: 14.0,
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                              ],
-                            )
-                          ],
-                        ),
+                                  const SizedBox(height: 6.0),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'From ${dateFormatWithComma.format(employee.from!)}',
+                                        style: const TextStyle(
+                                          color: Color(0xFF949c9E),
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      if (employee.to != null)
+                                        Text(
+                                          ' - ${dateFormatWithComma.format(employee.to!)}',
+                                          style: const TextStyle(
+                                            color: Color(0xFF949c9E),
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(top: 12.0, left: 16.0),
+                      width: double.infinity,
+                      height: 80.0,
+                      color: const Color(0xFFE5E5E5),
+                      child: const Text(
+                        'Swipe left to delete',
+                        style:
+                            TextStyle(fontSize: 15, color: Color(0xFF949C9E)),
+                      ),
+                    )
+                  ],
                 );
         },
       ),

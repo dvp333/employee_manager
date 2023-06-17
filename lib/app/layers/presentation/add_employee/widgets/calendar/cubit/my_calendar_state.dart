@@ -9,22 +9,21 @@ enum MyCalendarFilter {
 }
 
 class MyCalendarState with EquatableMixin {
-  const MyCalendarState({
-    this.selectedDay,
-    this.filter = MyCalendarFilter.noDate,
-  });
+  const MyCalendarState(
+      {this.selectedDay,
+      this.filter = MyCalendarFilter.noDate,
+      this.focusedDay});
 
   final DateTime? selectedDay;
   final MyCalendarFilter filter;
+  final DateTime? focusedDay;
 
-  MyCalendarState copyWith({
-    DateTime? selectedDay,
-    MyCalendarFilter? filter,
-  }) {
+  MyCalendarState copyWith(
+      {DateTime? selectedDay, MyCalendarFilter? filter, DateTime? focusedDay}) {
     return MyCalendarState(
-      selectedDay: selectedDay ?? this.selectedDay,
-      filter: filter ?? this.filter,
-    );
+        selectedDay: selectedDay ?? this.selectedDay,
+        filter: filter ?? this.filter,
+        focusedDay: focusedDay ?? this.focusedDay);
   }
 
   MyCalendarState copyWithSelectedDayNull({
@@ -38,7 +37,8 @@ class MyCalendarState with EquatableMixin {
 
   @override
   List<Object> get props => [
-        selectedDay?.millisecondsSinceEpoch ?? '',
+        selectedDay?.microsecondsSinceEpoch ?? '',
         filter,
+        focusedDay?.microsecondsSinceEpoch ?? '',
       ];
 }

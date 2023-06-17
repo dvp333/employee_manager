@@ -58,4 +58,8 @@ class MyCalendarCubit extends Cubit<MyCalendarState> {
     }
     return newDay;
   }
+
+  setFocusedDay(DateTime focusedDay) {
+    emit(state.copyWith(focusedDay: focusedDay));
+  }
 }

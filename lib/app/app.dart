@@ -36,7 +36,7 @@ class App extends StatelessWidget {
               .addPostFrameCallback((timeStamp) => cubit.getEmployees());
           return cubit;
         },
-        child: const EmployeeListPage(title: 'Employee List'),
+        child: const EmployeeListPage(title: 'Employee list'),
       ),
     );
   }

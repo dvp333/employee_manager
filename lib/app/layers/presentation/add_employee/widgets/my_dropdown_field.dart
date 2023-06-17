@@ -98,9 +98,6 @@ class _MyDropdownFieldState extends State<MyDropdownField> {
                       height: 16.0,
                       decoration: const BoxDecoration(
                         color: Colors.white,
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color(0xFFE5E5E5), width: 1.0)),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(16.0),
                           topRight: Radius.circular(16.0),

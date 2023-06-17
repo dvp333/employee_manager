@@ -1,27 +1,43 @@
-import 'package:employee_manager/app/layers/presentation/home/home_page.dart';
+import 'package:employee_manager/app/injection/injector.dart';
+import 'package:employee_manager/app/layers/presentation/employee_list/cubit/employee_list_cubit.dart';
+import 'package:employee_manager/app/layers/presentation/employee_list/employee_list_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Employee Manager',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+          primarySwatch: Colors.blue,
+          textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
+          inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xFFE5E5E5),
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                ),
+
+                // InputBorder(borderSide: BorderSide(color: Color(0xFFE5E5E5)))
+              ),
+          appBarTheme: Theme.of(context)
+              .appBarTheme
+              .copyWith(titleTextStyle: const TextStyle(fontSize: 18.0))),
+      home: BlocProvider(
+        create: (context) {
+          final cubit = getIt<EmployeeListCubit>();
+          WidgetsBinding.instance
+              .addPostFrameCallback((timeStamp) => cubit.getEmployees());
+          return cubit;
+        },
+        child: const EmployeeListPage(title: 'Employee List'),
       ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

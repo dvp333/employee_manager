@@ -6,23 +6,13 @@ void _initializeDataLayer() {
 }
 
 void _registerRepositories() {
-  // getIt.registerFactory<BooksRepository>(
-  //   () => BooksRepositoryImpl(
-  //     remoteDatasource: getIt(),
-  //     localDatasource: getIt(),
-  //   ),
-  // );
+  getIt.registerFactory<EmployeeRepository>(
+    () => EmployeeRepositoryImpl(
+      preferences: getIt(),
+    ),
+  );
 }
 
 void _registerDataSources() {
-  // getIt
-  //   ..registerSingletonAsync(() => SharedPreferences.getInstance())
-  //   ..registerFactory<RemoteBooksDatasource>(
-  //     () => RemoteBooksDatasourceImpl(),
-  //   )
-  //   ..registerFactory<LocalBooksDatasource>(
-  //     () => LocalBooksDatasourceImpl(
-  //       preferences: getIt(),
-  //     ),
-  //   );
+  getIt.registerSingletonAsync(() => SharedPreferences.getInstance());
 }
